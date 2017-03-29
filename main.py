@@ -39,6 +39,7 @@ def main():
         logger.info("==========Script Start=============")
         content = download_page("http://www.baidu.com")
         save_file("test.html", content)
+        print "Hello"
         logger.info("==========Script Finish=============")
     except:
         logger.error("Run script error: %s", traceback.format_exc())
