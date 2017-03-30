@@ -5,9 +5,11 @@ import traceback
 import urllib2
 import HTMLParser
 
-import mysql.connector
 import logging.config
 from ConfigParser import SafeConfigParser
+
+from stock.StockCodeManager import StockCodeManager
+from stock.StockInfoManager import StockInfoManager
 
 
 PRO_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -26,6 +28,7 @@ def download_page(url):
     req = urllib2.Request(url)
     response = urllib2.urlopen(req)
     html = response.read()
+    html.decode('utf-8')
     return html
 
 
@@ -37,9 +40,8 @@ def save_file(file_path, file_content):
 def main():
     try:
         logger.info("==========Script Start=============")
-        content = download_page("http://www.baidu.com")
-        save_file("test.html", content)
-        print "Hello"
+        stock_info = StockInfoManager.get_stock_info('000001')
+        print stock_info['basic_info']['name']
         logger.info("==========Script Finish=============")
     except:
         logger.error("Run script error: %s", traceback.format_exc())
