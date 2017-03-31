@@ -9,7 +9,7 @@ import logging.config
 from ConfigParser import SafeConfigParser
 
 from stock.StockCodeManager import StockCodeManager
-from stock.StockInfo import StockInfo
+from stock.StockInfoCrawler import StockInfoCrawler
 
 
 PRO_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -24,14 +24,6 @@ config = SafeConfigParser()
 config.read(os.path.join(CONF_PATH, 'sys.properties'))
 
 
-def download_page(url):
-    req = urllib2.Request(url)
-    response = urllib2.urlopen(req)
-    html = response.read()
-    html.decode('utf-8')
-    return html
-
-
 def save_file(file_path, file_content):
     with open(file_path, 'w+') as dest_file:
         dest_file.write(file_content)
@@ -40,6 +32,9 @@ def save_file(file_path, file_content):
 def main():
     try:
         logger.info("==========Script Start=============")
+        stock_info = StockInfoCrawler('000001')
+        basic_info = stock_info.catch_stock_basic_info()
+        logger.info(basic_info)
         logger.info("==========Script Finish=============")
     except:
         logger.error("Run script error: %s", traceback.format_exc())

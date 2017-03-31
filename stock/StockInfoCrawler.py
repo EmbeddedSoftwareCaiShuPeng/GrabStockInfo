@@ -4,13 +4,16 @@
 from utils.PageDownloader import PageDownloader
 
 
-class StockInfo:
+class StockInfoCrawler:
     """
     This class is for downloading stock's information from wangyi
     """
 
-    STOCK_INFO_URL = 'http://quotes.money.163.com/1%s.html'
-    STOCK_NAME_LABEL = '<a href=\'/1%s.html\'>'
+    STOCK_INFO_URL = 'http://www.cninfo.com.cn/information/lastest/szmb%s.html'
+    STOCK_NAME_LABEL = '</strong>'
+    STOCK_BRIEF_FINANCE_LABEL = 'zx_right_title'
+
+    BALANCE_SHEET_URL = 'http://quotes.money.163.com/f10/zcfzb_%s.html'
 
     __stock_code = ''
 
@@ -40,8 +43,11 @@ class StockInfo:
         url = self.STOCK_INFO_URL % self.__stock_code
         content = PageDownloader.download_page(url)
 
-        # get stock name
-        basic_info['name'] = content.split(self.STOCK_NAME_LABEL % self.__stock_code)[1].split('</a>')[0]
+        with open("test.html", 'w+') as dest_file:
+            dest_file.write(content)
+
+        content = PageDownloader.download_page(self.STOCK_INFO_URL % self.__stock_code)
+        basic_info['name'] = content.split(self.STOCK_NAME_LABEL)[2].split(' </td>')[0]
 
         return basic_info
 
