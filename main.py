@@ -9,7 +9,7 @@ import logging.config
 from ConfigParser import SafeConfigParser
 
 from stock.StockCodeManager import StockCodeManager
-from stock.StockInfoManager import StockInfoManager
+from stock.StockInfo import StockInfo
 
 
 PRO_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -40,8 +40,6 @@ def save_file(file_path, file_content):
 def main():
     try:
         logger.info("==========Script Start=============")
-        stock_info = StockInfoManager.get_stock_info('000001')
-        print stock_info['basic_info']['name']
         logger.info("==========Script Finish=============")
     except:
         logger.error("Run script error: %s", traceback.format_exc())
